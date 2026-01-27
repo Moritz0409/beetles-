@@ -6,7 +6,7 @@ sim_folder <- "D:/SEM3_UNIL/Integration Module 15 ECTS/Simulations"
 dir.create(sim_folder, showWarnings = FALSE, recursive = TRUE)
 
 
-# 1) REMOVE HBU, FAH, SAH (using full names)
+# 1) REMOVE HBU, FAH, SAH 
 
 basal_df_filt <- basal_df %>%
   filter(
@@ -50,3 +50,47 @@ make_plot <- function(df_period, title_text) {
       legend.margin = margin(t = 10),
       plot.margin = margin(10, 10, 40, 10)
     ) +
+    guides(colour = guide_legend(nrow = 2, byrow = TRUE))
+}
+
+
+# 4) PLOTS (2013, 2016, Combined census)
+
+
+# 2013–2020
+p13 <- make_plot(
+  filter(basal_df_filt, Period == "2013-2020"),
+  "Basal area trajectories — 2013–2020"
+)
+print(p13)
+
+ggsave(
+  filename = file.path(sim_folder, "BasalArea_2013-2020_SMOOTH_Moist-Int-Dry.png"),
+  plot = p13, width = 16, height = 6, dpi = 600, bg = "white"
+)
+
+# 2016–2020
+p16 <- make_plot(
+  filter(basal_df_filt, Period == "2016-2020"),
+  "Basal area trajectories — 2016–2020"
+)
+print(p16)
+
+ggsave(
+  filename = file.path(sim_folder, "BasalArea_2016-2020_SMOOTH_Moist-Int-Dry.png"),
+  plot = p16, width = 16, height = 6, dpi = 600, bg = "white"
+)
+
+# Combined census
+pCC <- make_plot(
+  filter(basal_df_filt, Period == "Combined_census"),
+  "Basal area trajectories — Combined census"
+)
+print(pCC)
+
+ggsave(
+  filename = file.path(sim_folder, "BasalArea_CombinedCensus_SMOOTH_Moist-Int-Dry.png"),
+  plot = pCC, width = 16, height = 6, dpi = 600, bg = "white"
+)
+
+message("Saved all plots in: ", sim_folder)
